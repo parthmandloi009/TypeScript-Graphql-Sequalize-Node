@@ -2,6 +2,7 @@ import { GraphQLObjectType, GraphQLSchema } from "graphql";
 import { CREATE_USERS } from "./Mutations/User";
 import { GET_ALL_USERS } from "./Queries/User";
 
+
 const RootQuery = new GraphQLObjectType({
     name:"RootQuery",
     fields:{

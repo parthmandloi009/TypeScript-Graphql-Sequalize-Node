@@ -2,7 +2,7 @@
   "name": "TypeScript-Graphql-node",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./src/index.ts",
   "scripts": {
     "start": "node ./dist/index.ts",
     "dev": "nodemon ./src/index.ts",

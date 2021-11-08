@@ -3,8 +3,8 @@ import cors from "cors";
 import { schema } from "./Schema";
 import { graphqlHTTP } from "express-graphql";
 import { createConnection } from "typeorm";
-import swaggerJsDoc  from "swagger-jsdoc";
-import swaggerUi  from "swagger-ui-express";
+import swaggerJsDoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
 import { Users } from "./Entities/Users";
 
 const main = async () => {
@@ -28,18 +28,45 @@ const main = async () => {
         title: "User Apis",
         description: "Customer API Information",
         contact: {
-          name: "Parth",
+          email:"pmandloi@deqode.com"
         },
-        servers: ["http://localhost:3002"],
+        liscence:{
+          name:"Apache 2.0",
+          url: "http://apache.org/"
+        },
+        servers: ["http://localhost:3002"]
       },
     },
-    apis: ["index.ts"],
+    apis: ["./src/index.ts"],
   };
 
   const swaggerDocs: any = swaggerJsDoc(swaggerOptions);
 
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
+  /**
+   * @swagger
+   * /graphqls:
+   *  get:
+   *    description: Use to request all request
+   *    responses:
+   *      '200':
+   *       description: A Successfull response
+   *       schema:
+   *         type: array
+   *
+   */
+
+  /**
+   * @swagger
+   * /graphqls:
+   *  put:
+   *    description: Use to request all request
+   *    responses:
+   *      '200':
+   *       description: A Successfull response
+   *
+   */
   app.use(
     "/graphql",
     graphqlHTTP({
