@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Application } from "express"
 import cors from "cors";
 import { schema } from "./Schema";
 import { graphqlHTTP } from "express-graphql";
@@ -16,9 +16,10 @@ const main = async () => {
     logging: true,
     synchronize: false,
     entities: [Users],
+    host: "127.0.0.1"
   });
 
-  const app = express();
+  const app:Application = express();
   app.use(cors());
   app.use(express.json());
 
@@ -74,8 +75,8 @@ const main = async () => {
       graphiql: true,
     })
   );
-  app.listen(3002, () => {
-    console.log("Server running on port 3002");
+  app.listen(8888, () => {
+    console.log("Server running on port 8888");
   });
 };
 

@@ -1,8 +1,7 @@
-FROM node:16 
-
-
+FROM node:10
+WORKDIR ./app
+COPY package.json /app
 RUN npm install
-
-COPY . .
-
-CMD ["node","./src/index.ts"]
+COPY . /app
+CMD npm start 
+EXPOSE 8888
