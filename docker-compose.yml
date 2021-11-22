@@ -1,65 +1,65 @@
-version: "3.8"
-
-networks:
-  app-tier:
-    driver: bridge
-
-services:
-  db:
-    image: mysql
-    command: --default-authentication-plugin=mysql_native_password
-    restart: always
-    expose:
-      - "3306"
-    ports:
-      - "3306:3306"    
-    networks:
-      - app-tier      
-    environment:
-      MYSQL_DATABASE: users
-      MYSQL_ALLOW_EMPTY_PASSWORD: ok
-      MYSQL_ROOT_PASSWORD: deq@123
-      MYSQL_USER: parth
-      MYSQL_PASSWORD: deq@123
-      MYSQL_ROOT_HOST: '127.0.0.1'
-  backend:
-    depends_on:
-      - db
-    build: .
-    command: bash -c 'while !</dev/tcp/db/3306; do sleep 1; done; npm start'
-    ports:
-      - "8888:8888"
-    networks:
-      - app-tier  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# version: '2'
+# version: "3.3"
 # services:
-#   cabin_db:
-#     image: mysql2:latest
-#     volumes:
-#       - "./.mysql-data/db:/var/lib/mysql"
-#     restart: always
+#   app:
+#     build: 
+#       context: .
+#     command: npm start
+#     depends_on:
+#       - db
 #     ports:
-#       - 3306:3306
-#     network_mode: "host"
+#       - "8888:8888"
 #     environment:
-#       MYSQL_ROOT_PASSWORD: deq@123
-#       MYSQL_HOST: 127.0.0.1
+#       NODE_ENV: development
+#       DB_HOST: host.docker.internal
+#     extra_hosts:
+#       - "host.docker.internal:host-gateway"
+#     networks:
+#       - conn
+
+#   db:
+#     image: mysql:8.0
+#     ports:
+#       - "3307:3306"
+#     environment:
 #       MYSQL_DATABASE: users
+#       MYSQL_ALLOW_EMPTY_PASSWORD: ok
+#       MYSQL_ROOT_PASSWORD: root
 #       MYSQL_USER: parth
 #       MYSQL_PASSWORD: deq@123
+#       MYSQL_ROOT_HOST: '%'
+#     networks:
+#       - conn
+# networks:
+#   conn:
+#     driver: bridge
 
-     
+
+version: "3.3"
+services:
+  app:
+    build: 
+      context: .
+    command: npm start
+    depends_on:
+      - db
+    ports:
+      - "8888:8888"
+    environment:
+      NODE_ENV: development
+      DB_HOST: host.docker.internal
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - conn
+
+  db:
+    image: mysql
+    ports:
+      - "3307:3306"
+    environment:
+      POSTGRES_PASSWORD: mysql
+    networks:
+      - conn
+networks:
+  conn:
+    driver: bridge

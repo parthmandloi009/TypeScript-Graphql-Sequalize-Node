@@ -5,20 +5,23 @@ import { graphqlHTTP } from "express-graphql";
 import { createConnection } from "typeorm";
 import swaggerJsDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
-import { Users } from "./Entities/Users";
+import { sequelize } from "./config/db";
 
 const main = async () => {
-  await createConnection({
-    type: "mysql",
-    database: "users",
-    username: "parth",
-    password: "deq@123",
-    logging: true,
-    synchronize: false,
-    entities: [Users],
-    host: "127.0.0.1"
-  });
 
+
+  sequelize.authenticate().then(async ()=>{
+
+    try{
+      await sequelize.sync()
+    }catch(error){
+      
+    }
+    console.log("Database connected.");
+  }).catch((error)=>{
+    console.log(error);
+    
+  })
   const app:Application = express();
   app.use(cors());
   app.use(express.json());
@@ -35,7 +38,7 @@ const main = async () => {
           name:"Apache 2.0",
           url: "http://apache.org/"
         },
-        servers: ["http://localhost:3002"]
+        servers: ["http://localhost:8888"]
       },
     },
     apis: ["./src/index.ts"],
